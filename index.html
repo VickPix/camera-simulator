@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script src="https://unpkg.com/vue"></script>
+	<!-- import CSS -->
+
+	<link rel="stylesheet" href="./css/spectre.min.css" />
+	<link rel="stylesheet" href="./css/spectre-exp.min.css" />
+	<link rel="stylesheet" href="./css/spectre-icons.min.css" />
+	<link rel="stylesheet" href="./css/shutter.css">
+	<!-- import JavaScript -->
+
+
+	<style type="text/css">
+		body{
+			/*background-color: #333;
+			color: #ddd*/
+		}
+		.container{
+			display: -webkit-box!important;
+		    display: -ms-flexbox!important;
+		    display: flex!important;
+		    -webkit-box-orient: vertical; 
+		    -webkit-box-direction: normal; 
+		    -ms-flex-direction: column;
+		    flex-direction: column;
+		    -webkit-box-pack: justify;
+		    -ms-flex-pack: justify;
+		    justify-content: space-between;
+		    vertical-align: middle;
+  			height:100%;
+  			width: 100%;
+  			margin: auto;
+		}
+		#app{
+			display: block;
+			margin:auto;
+			width: 100%
+		}
+		.image {
+		    width: 100%;
+		    display: block;
+		  }
+		.layer{
+		    -webkit-background-size: cover;
+		    -moz-background-size: cover;
+		    -o-background-size: cover;
+		    background-size: cover;
+		    left:-15px;
+		    right:-15px;
+		    top:-15px;
+		    bottom:-15px;
+		    position: absolute
+		}
+		.one{
+			background-image:url('./img/layer_1.png');
+		}
+		.two{
+			background-image:url('./img/layer_2.png');
+		}
+		.three{
+			background-image:url('./img/layer_3.png');
+		}
+		.noise{
+			background-image:url('./img/noise.png');
+		}
+		.layers{
+			position: relative;
+			/*max-height: 300px;*/
+			/*max-width: 300px; */
+			height: 50vh;
+			width: 50vh;
+			margin: auto;
+			/*
+			clear: both;
+			display: block;
+			padding:10px;*/
+			overflow: hidden;
+			border: 2px solid rgba(0,0,0,.6);
+			box-shadow: 0px 0px 20px rgba(0,0,0,.3)
+		}
+
+.column{padding:.7rem;}
+
+.example {
+  display: inline-block;
+  max-width: 80px;
+  max-height:80px;
+  height: 10vw;
+  width: 10vw;
+}
+	</style>
+</head>
+<body>
+<div class="container">
+	<div id="app">
+<div class="divider text-center" data-content="PHOTO SIMULATION"></div>
+	<div class="container grid-960 text-center">
+		  <div class="columns">
+		    <div class="column">
+		    	<div class="layers image" v-bind:style="styleTot">
+					<div class="layer one" v-bind:style="style1"></div>
+					<div class="layer two" v-bind:style="style2"></div>
+					<div class="layer three" v-bind:style="style3"></div>
+					<div class="layer noise" v-bind:style="styleNoise"></div> 		
+				</div>
+		    </div>
+		    
+		  </div>
+		  <div class="columns">
+		  	<div class="column">
+			    <div class="columns">
+			    	<div class="column">f/{{val_diaframma}}</div>
+			    </div>
+			    <div class="columns">
+			    	<div class="column">
+			    		<div class="example">
+						    <div class="camera-shutter camera-shutter--theme1" v-bind:class="classAp">
+						      <div class="camera-shutter__lens">
+						        <div class="camera-shutter__triangles">
+						          <div class="camera-shutter__triangle camera-shutter__triangle--1"></div>
+						          <div class="camera-shutter__triangle camera-shutter__triangle--2"></div>
+						          <div class="camera-shutter__triangle camera-shutter__triangle--3"></div>
+						          <div class="camera-shutter__triangle camera-shutter__triangle--4"></div>
+						          <div class="camera-shutter__triangle camera-shutter__triangle--5"></div>
+						          <div class="camera-shutter__triangle camera-shutter__triangle--6"></div>
+						        </div>
+						      </div>
+						    </div>
+						</div>
+			    	</div>
+			    </div>
+		    </div>
+		    <div class="column">
+		    	<div class="columns">
+		    		<div class="column">
+		    			{{this.array_t[this.values[1]]}}
+		    		</div>
+		    	</div>
+		    	<div class="columns">
+		    		<div class="column">
+		    			<i class="icon icon-time"></i>
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="column">
+		    	<div class="columns">
+		    		<div class="column">
+		    			{{(this.values[3]+1)*50}}
+		    		</div>
+		    	</div>
+		    	<div class="columns">
+		    		<div class="column">
+		    			ISO
+		    		</div>
+		    	</div>
+		    </div>
+		    <div class="column">
+		    	<div class="columns">
+		    		<div class="column">
+		    			{{(Math.pow(this.values[0],2))<1?'< 1m':Math.pow(this.values[0],2)+'m'}}
+		    		</div>
+		    	</div>
+		    	<div class="columns">
+		    		<div class="column">
+		    			<i class="icon icon-photo"></i>
+		    		</div>
+		    	</div>
+		    </div>
+		  </div>
+		  <div class="divider text-center" data-content=""></div>
+		  <div class="columns">
+		  	<div class="column label">FOCUS</div>
+		    <div class="column"><input class="slider" type="range" min="0" max="10" value="5" v-model="values[0]" /></div>
+		  </div>
+		  
+		  <div class="columns">
+		  	<div class="column label">SHUTTER SPEED</div>		  
+		    <div class="column"><input class="slider" type="range" min="0" max="10" value="7" v-model="values[1]"/></div>
+		  </div>
+  
+		  <div class="columns">
+		  	<div class="column label">APERTURE</div>
+		    <div class="column"><input class="slider" type="range" min="0" max="10" value="4" v-model="values[2]"/></div>
+		  </div>
+		  
+		  <div class="columns">
+		  	<div class="column label">ISO</div>
+		    <div class="column"><input class="slider" type="range" min="0" max="10" value="3" v-model="values[3]"/></div>
+		  </div>
+	</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	var a = 28;
+	var app = new Vue({
+	  el: '#app',
+	  data: {
+	    message: 'Hello Vue.js!',
+	    values:[5,7,4,3],
+        value_t: 8,
+        value_f: 4,
+        value_i: 3,
+        value_m: 5,
+        val_diaframma:0,
+        val_exposition:0,
+        classAp: 'camera-shutter--f11',
+        array_f: [1,1.4,1.8,2,2.8],
+        array_t: ['1/250','1/125','1/60','1/30','1/15','1/8','1/4','0.5"','1"','2"','4"'],
+        style1 : {'filter':'blur(1px)'},
+        style2 : {'filter':'blur(1px)'},
+        style3 : {'filter':'blur(1px)'},
+        styleNoise:{'opacity':'.1'},
+        styleTot: {'filter': 'brightness(100%)'}
+	  },
+	  watch: {
+	    values: function (val) {
+	      this.calcolo_finale()
+	    },
+	  },
+	  /*ready () {
+	  	this.calcolo_finale()
+	},*/
+	mounted (){
+		this.calcolo_finale()
+	},
+	  methods: {
+	  	/*
+	    calcola_diaframma: function(){
+	    	//this.val_diaframma = Math.round(Math.sqrt(Math.pow(2,this.array_f[this.value_f]))*10)/10 ;
+	    	this.val_diaframma = (this.value_f>=7) ? Math.floor(Math.sqrt(Math.pow(2,this.value_f))) : Math.floor(Math.sqrt(Math.pow(2,this.value_f))*10)/10 ;
+	    },
+	    calcolo_finale2: function(){
+	    	this.style3.filter ='blur('+Math.round((a/this.val_diaframma)*this.value_m/10)+'px)'
+	    	this.style2.filter ='blur('+Math.round((a/this.val_diaframma)*Math.abs(((5-this.value_m)/10)))+'px)'
+	    	this.style1.filter ='blur('+Math.round((a/this.val_diaframma)*(10-this.value_m)/10)+'px)'
+	    	this.styleTot.filter='brightness('+(100+(20*(15-((10-this.value_t)+(10-this.value_i)+this.value_f)))) +'%)'
+	    	this.styleNoise.opacity = 0.1*(this.value_i-3)
+	    },*/
+	    calcolo_finale: function(){
+	    	this.val_diaframma = (this.values[2]>=7) ? Math.floor(Math.sqrt(Math.pow(2,this.values[2]))) : Math.floor(Math.sqrt(Math.pow(2,this.values[2]))*10)/10 
+	    	this.classAp = 'camera-shutter--f'+(this.val_diaframma+'').replace('.','_')
+	    	this.style3.filter ='blur('+Math.round((a/this.val_diaframma)*this.values[0]/10)/5+'vw)'
+	    	this.style2.filter ='blur('+Math.round((a/this.val_diaframma)*Math.abs(((5-this.values[0])/10)))/5+'vw)'
+	    	this.style1.filter ='blur('+Math.round((a/this.val_diaframma)*(10-this.values[0])/10)/5+'vw)'
+	    	this.styleTot.filter='brightness('+(100+(15*(15-((10-this.values[1])+(10-this.values[3])+1*this.values[2])))) +'%)'
+	    	this.styleNoise.opacity = 0.1*(this.values[3]-3)
+	    }
+	  }
+	})
+
+</script>
+</body>
+</html>
