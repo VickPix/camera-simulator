@@ -179,7 +179,7 @@
 		    <div class="column">
 		    	<div class="columns">
 		    		<div class="column">
-		    			{{(this.values[3]+1)*50}}
+		    			{{(Math.pow(2,1*this.values[3])*50)}}
 		    		</div>
 		    	</div>
 		    	<div class="columns">
@@ -201,7 +201,7 @@
 		    	</div>
 		    </div>
 		  </div>
-		  <div class="divider text-center" data-content=""></div>
+		  <!--<div class="divider text-center" data-content=""></div>-->
 		  <div class="columns">
 		  	<div class="column label">FOCUS</div>
 		    <div class="column"><input class="slider" type="range" min="0" max="10" value="5" v-model="values[0]" /></div>
